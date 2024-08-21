@@ -12,8 +12,10 @@ node -v
 
 del nodejs.msi
 
+npm i -g puppeteer
+
 call npx puppeteer browsers install chrome
 
 echo Setup concluído.
 
-start "" execute.bat
+start "" start.exe

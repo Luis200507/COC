@@ -6,7 +6,8 @@ const fs = require("fs");
 const path = require("path");
 const url = require("url");
 const chalk = require("chalk");
-const { requerirCredenciais } = require("./loginAndValidate.js")
+const readline = require("readline")
+const { requerirCredenciais, validateSerial } = require("./loginAndValidate.js")
 
 
 
@@ -31,7 +32,7 @@ let moduloFinal;
 
 // Terminal prompts 
 async function runPrompts() {
-  credenciais = await requerirCredenciais()
+  credenciais = await requerirCredenciais(true)
 
   const fgbOrIt = await inquirer.select({
     message: 'Escolha um tipo:',
@@ -104,6 +105,18 @@ async function runPrompts() {
   });
   moduloFinal = await inquirer.number({
     message: 'Até qual?'
+  });
+}
+
+async function exitApp(message) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  rl.question(message, () => {
+    rl.close();
+    process.exit(0);
   });
 }
 
@@ -825,6 +838,13 @@ async function responderExers(page) {
 };
 
 (async () => {
+  const keyResponse = await validateSerial();
+  if(!keyResponse[0]) {
+    exitApp("Chave inválida, ou já usada por outro usuário. Tente novamente ou adquira uma nova chave com o proprietário.")
+    fs.unlinkSync(keyResponse[1])
+    return
+  }
+
   await runPrompts().catch(err => {
     console.error('Erro ao executar os prompts:', err);
   });

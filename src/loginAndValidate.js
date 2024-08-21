@@ -4,8 +4,8 @@ const path = require('path');
 const KeyAuth = require('keyauth')
 
 
-// const execDirectory = path.dirname(process.execPath);
-const filePath = path.join(__dirname, 'credentials.json');
+const execDirectory = path.dirname(process.execPath);
+const filePath = path.join(execDirectory, 'credentials.json');
 const KeyAuthApp = new KeyAuth(
   "cocrobot", // Application Name
   "tcnM2LBvqg", // Owner ID
@@ -14,9 +14,9 @@ const KeyAuthApp = new KeyAuth(
   "aaa",
 );
 
-async function requerirCredenciais() {
+async function requerirCredenciais(log) {
   if (fs.existsSync(filePath)) {
-    console.log('Credenciais recuperadas do ultimo uso!')
+    if(log) console.log('Credenciais recuperadas do ultimo uso!')
     const data = fs.readFileSync(filePath, 'utf8');
     return JSON.parse(data);
   } else {
@@ -27,7 +27,7 @@ async function requerirCredenciais() {
     }
 
     fs.writeFileSync(filePath, JSON.stringify(answers, null, 2), 'utf8');
-    console.log('Credenciais salvas com sucesso!');
+    if(log) console.log('Credenciais salvas com sucesso!');
 
     return answers;
   }
@@ -36,14 +36,14 @@ async function requerirCredenciais() {
 async function validateSerial() {
 
   try {
-    const license = await requerirCredenciais()
+    const license = await requerirCredenciais(false)
     await KeyAuthApp.initialize(); // Inicializa a instância da aplicação KeyAuth
     const auth = await KeyAuthApp.license(license.serialKey); // Verifica a licença
 
     if (auth.success) {
-      console.log(auth); 
+      return [true]
     } else {
-      console.log('aae')
+      return [false, filePath]
     }
   } catch (error) {
     console.error("Erro na verificação da licença:", error.message);
