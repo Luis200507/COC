@@ -12,10 +12,4 @@ node -v
 
 del nodejs.msi
 
-npm i -g puppeteer
-
-call npx puppeteer browsers install chrome
-
-echo Setup concluído.
-
-start "" start.exe
+call npm i -g puppeteer@22.10.0

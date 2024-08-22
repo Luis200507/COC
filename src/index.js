@@ -32,7 +32,7 @@ let moduloFinal;
 
 // Terminal prompts 
 async function runPrompts() {
-  credenciais = await requerirCredenciais(true)
+  credenciais = await requerirCredenciais()
 
   const fgbOrIt = await inquirer.select({
     message: 'Escolha um tipo:',
@@ -922,6 +922,8 @@ async function responderExers(page) {
         console.log('\n')
       }
     }
+    console.log('\n')
   }
-
+  
+  await inquirer.confirm({ message: 'Finalizado, deseja fechar a janela?'})
 })();

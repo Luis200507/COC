@@ -17,9 +17,9 @@ const KeyAuthApp = new KeyAuth(
   "aaa",
 );
 
-async function requerirCredenciais(log) {
+async function requerirCredenciais() {
   if (fs.existsSync(filePath)) {
-    if(log) console.log('Credenciais recuperadas do ultimo uso!')
+    console.log('Credenciais recuperadas!')
     const data = fs.readFileSync(filePath, 'utf8');
     return JSON.parse(data);
   } else {
@@ -30,7 +30,6 @@ async function requerirCredenciais(log) {
     }
 
     fs.writeFileSync(filePath, JSON.stringify(answers, null, 2), 'utf8');
-    if(log) console.log('Credenciais salvas com sucesso!');
 
     return answers;
   }
@@ -39,7 +38,7 @@ async function requerirCredenciais(log) {
 async function validateSerial() {
 
   try {
-    const license = await requerirCredenciais(false)
+    const license = await requerirCredenciais()
     await KeyAuthApp.initialize(); // Inicializa a instância da aplicação KeyAuth
     const auth = await KeyAuthApp.license(license.serialKey); // Verifica a licença
 
