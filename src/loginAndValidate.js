@@ -6,10 +6,13 @@ const KeyAuth = require('keyauth')
 
 const execDirectory = path.dirname(process.execPath);
 const filePath = path.join(execDirectory, 'credentials.json');
+
+// const filePath = path.join(__dirname, 'credentials.json');
+
 const KeyAuthApp = new KeyAuth(
   "cocrobot", // Application Name
-  "tcnM2LBvqg", // Owner ID
-  "886643a171a91cd2ccae0a462448e225514045793db09a55830c453ee3011a03", // Application Secret
+  "5MY4fyNopA", // Owner ID
+  "31dab00979e99a725952e93e0d5fa6a7a601181cdecf5bdafe232c7f62d17b37", // Application Secret
   "1.0", // Application Version
   "aaa",
 );

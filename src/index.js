@@ -869,7 +869,8 @@ async function responderExers(page) {
   await page.goto(hrefValue);
 
   await page.waitForSelector('.course-display-card__info');
-  const cadernos = await page.$$eval('.course-display-card__info > a', elements => {
+  const cadernos = await page.evaluate(() => {
+    const elements = Array.from(document.querySelectorAll('.course-display-card__info > a'));
     return elements.map(element => ({
       texto: element.innerText,
       href: element.getAttribute('href')
@@ -922,5 +923,5 @@ async function responderExers(page) {
       }
     }
   }
-    
+
 })();
